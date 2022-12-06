@@ -1,5 +1,6 @@
 import Data.List (findIndex, nub, tails)
 import Data.List.Split (divvy)
+import Data.Maybe
 
 windows' :: Int -> [a] -> [[a]]
 windows' n xs = map (take n) $ tails xs
@@ -11,11 +12,7 @@ solve' n xs = fmap (+ 1) $ findIndex (\x -> nub x == x) $ divvy n 1 xs
 
 solve :: Int -> String -> Int
 solve n xs =
-  (+) n $
-    length $
-      takeWhile
-        (== 1)
-        (map (\ls -> if length (nub ls) == length ls then 0 else 1) $ windows n xs)
+  1 + fromJust (findIndex (\x -> nub x == x) $ windows n xs)
 
 main :: IO ()
 main = do
